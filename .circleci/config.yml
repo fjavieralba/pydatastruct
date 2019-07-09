@@ -5,4 +5,4 @@
       - image: circleci/python:3.7.1
      steps:
        - checkout
-       - run: cd linked_list && python setup.py test && cd ../tree && python setup.py test
+       - run: cd linked_list && python setup.py test && cd ../tree && python setup.py test && cd ../hashmap && python setup.py test

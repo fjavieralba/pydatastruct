@@ -1,8 +1,8 @@
 import array
 
 class HashMap():
-    def __init__(self):
-        self.keys_array_size = 256
+    def __init__(self, size=256):
+        self.keys_array_size = size
         self.keys_array = [[] for i in range(0, self.keys_array_size)]
     
     def get(self, key):

@@ -15,7 +15,7 @@ class BetterLRU:
     def __init__(self, size):
         self.size = size
         self.pages_dict = {}
-        self.pages_queue = 
+        
 
 class LRU:
     

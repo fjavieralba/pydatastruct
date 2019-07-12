@@ -5,7 +5,7 @@ class Node():
         self.next = next
     
     def __repr__(self):
-        repr = "({})".format(self.data)
+        repr = "<{}>".format(self.data)
         if self.next is not None:
             repr = repr + "->"
         if self.prev is not None:

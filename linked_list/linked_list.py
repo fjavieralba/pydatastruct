@@ -3,6 +3,7 @@ class Node():
         self.data = data
         self.next = next
 
+
 class LinkedList():
     def __init__(self, python_list = None):
         """ creates a new empty list """
@@ -11,10 +12,10 @@ class LinkedList():
             for elem in python_list:
                 self.append(elem)
 
-    def isEmpty(self):
+    def isEmpty(self):  # O(1)
         return self.head.next == None
     
-    def size(self):
+    def size(self):  # O(N)
         size = 0
         current_node = self.head
         while not current_node.next is None:
@@ -22,19 +23,19 @@ class LinkedList():
             size += 1
         return size
 
-    def append(self, data):
+    def append(self, data):  # O(N)
         current_node = self.head
         while not current_node.next is None:
             current_node = current_node.next
         current_node.next = Node(data)
     
-    def prepend(self, data):
+    def prepend(self, data):  # O(1)
         new_node = Node(data)
         previous_first = self.head.next
         self.head.next = new_node
         new_node.next = previous_first
 
-    def deleteFirstOccurence(self, data):
+    def deleteFirstOccurence(self, data):  # O(N)
         if self.isEmpty():
             return
         current_node = self.head.next
@@ -48,7 +49,7 @@ class LinkedList():
         if next_node.data == data:
             current_node.next = next_node.next
     
-    def deleteAtIndex(self, index):
+    def deleteAtIndex(self, index):  # O(N)
         if self.isEmpty():
             raise RuntimeError("cannot delete in empty list")
         current_node = self.head.next
@@ -66,7 +67,7 @@ class LinkedList():
         else:
             raise RuntimeError("out of bounds") 
     
-    def getElementAtIndex(self, index):
+    def getElementAtIndex(self, index):  # O(N)
         if self.isEmpty():
             raise RuntimeError("empty list")
         current_node = self.head.next
@@ -89,3 +90,4 @@ class LinkedList():
             current_node = current_node.next
         python_list.append(current_node.data)
         return python_list
+        

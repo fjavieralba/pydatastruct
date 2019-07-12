@@ -3,6 +3,14 @@ class Node():
         self.data = data
         self.prev = prev
         self.next = next
+    
+    def __repr__(self):
+        repr = "({})".format(self.data)
+        if self.next is not None:
+            repr = repr + "->"
+        if self.prev is not None:
+            repr = "<-" + repr
+        return repr
         
 class DoubleLinkedList:
     def __init__(self, head=None, last=None):
@@ -51,3 +59,15 @@ class DoubleLinkedList:
             return current_node
         else:
             raise RuntimeError("Out of Bounds")
+    
+    def __repr__(self):
+        if self.is_empty():
+            return "(Empty)"
+        else:
+            repr = "<- head"
+            current_node = self.head
+            while current_node is not self.last:
+                repr = str(current_node) + repr
+                current_node = current_node.prev
+            repr = "last ->" + str(current_node) + repr
+            return repr

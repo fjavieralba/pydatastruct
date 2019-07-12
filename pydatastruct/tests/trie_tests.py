@@ -1,5 +1,5 @@
 import unittest
-from trie import Node
+from tree.trie import Node
 
 class TestTrie(unittest.TestCase):
     

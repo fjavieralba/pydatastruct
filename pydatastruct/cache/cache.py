@@ -1,20 +1,54 @@
 import sys
-
-
-class Page:
-    """ a memory page in a cache, with pointers to the previous and next pages """
-    def __init__(self, data, previous=None, next=None):
-        self.data = data
-
+from linked_list.double_linked_list import DoubleLinkedList, Node
 
 class BetterLRU:
     """ an LRU implemented with:
-        - a queue of values, ordered by last access time (implemented with a doubly linked list)
+        - a queue of values, ordered by last access time (using a doubly linked list)
         - a hash table of key -> (value adress in the queue) for fast lookups
     """
     def __init__(self, size):
         self.size = size
         self.pages_dict = {}
+        self.pages_queue = DoubleLinkedList()
+        self.stored_pages_count = 0
+    
+    def put(self, key, value):
+        if key in self.pages_dict: #existing node
+            node = self.pages_dict[key]
+            node.data = (key, value)
+            self.move_node_to_first_position(node)
+        else: # new node
+            if self.is_full():
+                self.remove_last_page()
+            else:
+                self.stored_pages_count += 1
+            self.pages_dict[key] = value
+            self.pages_queue.prepend(Node((key, value)))
+
+    def is_full(self):
+        return self.stored_pages_count >= self.size
+    
+    def remove_last_page(self):
+        node = self.pages_queue.last
+        key = node.data[0]
+        node.prev.next = None
+        self.pages_queue.last = node.prev
+        del self.pages_dict[key]
+
+    def get(self, key):
+        if key not in self.pages_dict:
+            raise RuntimeError("Key not in cache")
+        node = self.pages_dict[key]
+        self.move_node_to_first_position(node)
+        return node.data
+
+    def move_node_to_first_position(self, node):
+        if self.pages_queue.head is not node:
+            node.prev.next = node.next
+            node.next.prev = node.prev
+            self.pages_queue.head.next = node
+            node.prev = self.pages_queue.head
+            self.pages_queue.head = node
         
 
 class LRU:

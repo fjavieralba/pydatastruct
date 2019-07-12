@@ -22,8 +22,9 @@ class BetterLRU:
                 self.remove_last_page()
             else:
                 self.stored_pages_count += 1
-            self.pages_dict[key] = value
-            self.pages_queue.prepend(Node((key, value)))
+            new_node = Node((key, value))
+            self.pages_dict[key] = new_node
+            self.pages_queue.prepend(new_node)
 
     def is_full(self):
         return self.stored_pages_count >= self.size
@@ -31,8 +32,8 @@ class BetterLRU:
     def remove_last_page(self):
         node = self.pages_queue.last
         key = node.data[0]
-        node.prev.next = None
-        self.pages_queue.last = node.prev
+        node.next.prev = None
+        self.pages_queue.last = node.next
         del self.pages_dict[key]
 
     def get(self, key):
@@ -43,12 +44,17 @@ class BetterLRU:
         return node.data
 
     def move_node_to_first_position(self, node):
-        if self.pages_queue.head is not node:
+        if self.pages_queue.head is node:
+            return
+        if self.pages_queue.last is node:
+            node.next.prev = None
+            self.pages_queue.last = node.next
+        else:
             node.prev.next = node.next
             node.next.prev = node.prev
-            self.pages_queue.head.next = node
-            node.prev = self.pages_queue.head
-            self.pages_queue.head = node
+        self.pages_queue.head.next = node
+        node.prev = self.pages_queue.head
+        self.pages_queue.head = node
         
 
 class LRU:
